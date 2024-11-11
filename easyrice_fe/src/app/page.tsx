@@ -69,7 +69,7 @@ const App: React.FC = () => {
       try {
         const response = await axios.get("http://localhost:5000/history");
         setData(response.data.data);
-      } catch (error) {
+      } catch {
         message.error("Error fetching data.");
       }
     };
@@ -100,7 +100,7 @@ const App: React.FC = () => {
       } else {
         message.error("Failed to delete selected records.");
       }
-    } catch (error) {
+    } catch {
       message.error("Error deleting records.");
     }
   };
@@ -122,7 +122,7 @@ const App: React.FC = () => {
         `http://localhost:5000/history${queryParams}`
       );
       setData(response.data.data); // Assume the data is returned inside 'data' property
-    } catch (error) {
+    } catch {
       message.error("Search failed.");
     }
   };
@@ -132,7 +132,7 @@ const App: React.FC = () => {
       await searchForm.resetFields();
       const response = await axios.get("http://localhost:5000/history");
       setData(response.data.data);
-    } catch (error) {
+    } catch {
       message.error("Error resetting filters.");
     }
   };

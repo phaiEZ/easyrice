@@ -14,20 +14,20 @@ import {
 import React, { useState } from "react";
 import { RcFile } from "antd/es/upload";
 import axios from "axios";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
+import moment from "moment";
 
 const App: React.FC = () => {
     const [createForm] = Form.useForm();
     const [fileName, setFileName] = useState<string>("");
-    const router = useRouter(); // Initialize router
+    const router = useRouter();
 
     const handleFileUpload = (file: RcFile) => {
         const reader = new FileReader();
         reader.onload = () => {
             try {
-                const json = JSON.parse(reader.result as string);
                 setFileName(file.name);
-            } catch (error) {
+            } catch {
                 message.error("Invalid JSON file");
             }
         };
@@ -39,7 +39,16 @@ const App: React.FC = () => {
         return `INS-${Date.now()}`;
     };
 
-    const createPayload = (values: any) => {
+    // Update the type of `values` to include `samplingTime` as a moment object
+    const createPayload = (values: {
+        name: string,
+        imageLink: string,
+        standard: string,
+        note?: string,
+        price?: number,
+        samplingTime?: moment.Moment, // Properly type samplingTime as moment.Moment
+        samplingPoint?: string[],
+    }) => {
         return {
             name: values.name,
             createDate: new Date().toISOString(),

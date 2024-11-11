@@ -1,10 +1,7 @@
-// src/app/components/Navbar.tsx
 
 'use client';
 
 import React from 'react';
-import { Menu, ConfigProvider } from 'antd';
-import { HomeOutlined, InfoCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
 const Navbar: React.FC = () => {

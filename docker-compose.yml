@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  easyrice_fe:
+    build:
+      context: ./easyrice_fe # Frontend directory
+    container_name: easyrice_fe
+    ports:
+      - "3000:3000"
+    depends_on:
+      - easyrice_be
+    networks:
+      - easyrice_network
+    environment:
+      - REACT_APP_BACKEND_URL=http://easyrice_be:5000 # Backend URL for frontend
+
+  easyrice_be:
+    build:
+      context: ./easyrice_be # Backend directory
+    container_name: easyrice_be
+    ports:
+      - "5000:5000"
+    depends_on:
+      - easyrice_mysql
+    networks:
+      - easyrice_network
+    environment:
+      - MYSQL_HOST=easyrice_mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=easyrice_db
+    command: ["npm", "start"] # Command to start your backend (adjust if necessary)
+
+  easyrice_mysql:
+    image: mysql:8.0
+    container_name: easyrice_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password # MySQL root password
+      MYSQL_DATABASE: easyrice_db # Database name
+    ports:
+      - "3306:3306" # Expose MySQL port to localhost
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql # Mount init.sql file
+    networks:
+      - easyrice_network
+
+networks:
+  easyrice_network:
+    driver: bridge
